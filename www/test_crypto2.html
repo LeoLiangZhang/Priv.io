@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Priv.io</title>
+<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="css/privio.css" rel="stylesheet">
+<script src="lib/jquery.js"></script>
+<script src="lib/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+
+	<div id="privWelcome" class="container">
+		<div class="row">
+			<div class="span8 offset2">
+				<div class="row">
+					<div class="hero-unit" style="background-color: white; border: 1px solid rgba(0, 0, 0, 0.1); -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);">
+						<h1>Priv.io</h1>
+						<p>Do you want to take full control of your personal data in the cloud? Try Priv.io now!</p>
+						<p>
+						  <a class="btn btn-info btn-large" data-toggle="modal" href="#privAbout"><i class="icon-info-sign icon-white"></i> Learn more</a>
+
+						</p>
+					</div>
+				</div>
+				<div class="row">
+
+					<form id="privLogin" class="well form-inline" style="background-color:white;" >
+						<input name="username" type="text" class="span2" placeholder="Username"></input>
+						<input name="password" type="password" class="span2" placeholder="Password"></input>
+						<label class="checkbox">
+						  <input type="checkbox"> Remember me </input>
+						</label>
+						<!-- <a class="btn btn-primary" id="btn_login">Sign in</a> -->
+						<input type="submit" value="Sign in" class="btn btn-primary" id="btn_login" data-loading-text="loading..."/>
+						<a class="btn" data-toggle="modal" href="#privReg">Registration</a>
+
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id='privUser' class='hide privio-user'>
+
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+					</a> <a class="brand" style="font-weight: bold;" href="">Priv.io</a>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li class="active"><a href="#">Home</a></li>
+							<!-- <li><a data-toggle="modal" href="#privReg">Registration</a></li> -->
+							<li><a data-toggle="modal" href="#privSettings">Settings</a></li>
+							<li><a data-toggle="modal" href="#privFriends">Friends</a></li>
+							<li><a data-toggle="modal" href="#privHelp">Help</a></li>
+							<li><a data-toggle="modal" href="#privAbout">About</a></li>
+							<li><a id="btn_privUser_feedback" href="#">Feedback</a></li>
+						</ul>
+						<!-- <ul class="nav pull-right">
+							<li><a>+You</a></li>
+						</ul> -->
+					</div>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+		<div class="container privio-user-container">
+			<div class="row">
+				<div class="span3 well" style="padding:8px 0; background-color:white;">
+					<!--Sidebar content-->
+					<div id='divProfile'></div>
+				</div>
+				<div id="appContainer" style="" class="span8">
+
+				<!-- <iframe src="http://feed.app.priv.io/index.html" class="privio-app-iframe" seamless="seamless"></iframe> -->
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="privReg" class="modal hide fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Registration</h3>
+		</div>
+		<div class="modal-body">
+			<form name="reg" action="/proxy/action/reg" method="post"
+				class="form-horizontal">
+				<fieldset>
+					<!-- <legend>Basic</legend> -->
+					<div class="control-group">
+						<label class="control-label">Username</label>
+						<div class="controls">
+							<input type="text" class="input-xlarge" name="username"></input>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Password</label>
+						<div class="controls">
+							<input type="password" class="input-xlarge" name="password"></input>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Email</label>
+						<div class="controls">
+							<input type="text" class="input-xlarge" name="email"></input>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Storage</legend>
+					<div class="control-group">
+						<label class="control-label">Type of storage</label>
+						<div class="controls">
+							<select id="storage">
+								<option>Amazon S3</option>
+								<option>WebDAV</option>
+								<option>Dropbox</option>
+							</select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">AccessKey</label>
+						<div class="controls">
+							<input type="text" class="input-xlarge" name="access_key"></input>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">AccessSecret</label>
+						<div class="controls">
+							<input type="password" class="input-xlarge" name="access_secret"></input>
+							<p>Where to find these info?</p>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a class="btn" data-toggle="modal" href="#privHelp"><i class="icon-question-sign "></i></a>
+			<a id='btn_reg' data-loading-text="Creating..." href="#" class="btn btn-primary">Register</a>
+			<a href="#" class="btn" data-dismiss="modal">Reset</a>
+		</div>
+	</div>
+
+	<div id="privAbout" class="modal hide fade" style="top: 300px;">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>About Priv.io</h3>
+		</div>
+		<div class="modal-body" style="max-height: 550px;">
+
+		</div>
+		<script>
+			$('#privAbout').on('show', function(){
+				if($('#privAbout').data('has_init')) return;
+				$('#privAbout .modal-body').load('help/faq.text.html');
+				$('#privAbout').data('has_init', true);
+			});
+		</script>
+	</div>
+
+	<div id="privHelp" style="width: 80%; left: 10%; margin: 0; top: 10%; height: 80%; overflow:hidden;" class="modal hide fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Priv.io Help</h3>
+		</div>
+		<div class="modal-body" style="max-height: 100%; height:85%; ">
+			<iframe style="width:98%; height:98%; border:0px; " src="http://priv.io/help/help.html"></iframe>
+		</div>
+	</div>
+
+	<div id="privSettings" class="modal hide fade" >
+		<div class="modal-header">
+		<a class="close" data-dismiss="modal">&times;</a>
+		<h3>Priv.io Settings</h3>
+		</div>
+
+		<div class="modal-body" style="height:900px;">
+		<div class="tabbable ">
+		  <ul class="nav nav-tabs">
+		    <li class="active"><a href="#tab1" data-toggle="tab">Account</a></li>
+		    <li><a href="#tab2" data-toggle="tab">Storage</a></li>
+		    <li><a href="#tab3" data-toggle="tab">Keys</a></li>
+		    <li><a href="#tab4" data-toggle="tab">Apps</a></li>
+		  </ul>
+		  <div class="tab-content">
+		    <div class="tab-pane active" id="tab1">
+		      <form id="form_setttings_account" name="form_setttings_account" class="form-horizontal">
+		        <fieldset>
+		          <!-- <legend>Change Password</legend> -->
+		          <div class="control-group">
+				      <label class="control-label">Old Password</label>
+				      <div class="controls">
+				        <input name="password_old" type="password" class="input-xlarge">
+				        <!-- <p class="help-block">Type your old password</p> -->
+				      </div>
+				  </div>
+				  <div class="control-group">
+				      <label class="control-label">New Password</label>
+				      <div class="controls">
+				        <input name="password_new" type="password" class="input-xlarge">
+				      </div>
+				  </div>
+				  <div class="control-group">
+				      <label class="control-label">Confirm Password</label>
+				      <div class="controls">
+				        <input name="password_confirm" type="password" class="input-xlarge">
+				      </div>
+				  </div>
+		        </fieldset>
+		      </form>
+		    </div>
+		    <div class="tab-pane" id="tab2">
+				<form id="form_setttings_storage" name="form_setttings_storage" class="form-horizontal">
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label">Type of storage</label>
+							<div class="controls">
+								<select id="storage">
+									<option>Amazon S3</option>
+									<option>WebDAV</option>
+									<option>Dropbox</option>
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">AccessKey</label>
+							<div class="controls">
+								<input type="text" class="input-xlarge" name="accessKey"></input>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">AccessSecret</label>
+							<div class="controls">
+								<input type="password" class="input-xlarge" name="accessSecret"></input>
+								<p>Where to find these info?</p>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+		    </div>
+		    <div class="tab-pane" id="tab3">
+		      <form id="form_setttings_keys" name="form_setttings_keys" class="form-horizontal">
+		        <fieldset>
+		          <!-- <legend>Change Password</legend> -->
+		          <div class="control-group">
+				      <label class="control-label">RSA PassPhrase</label>
+				      <div class="controls">
+				      <div class="input-append">
+				        <input id="settings_rsa_passphrase" name="rsa_passphrase" type="text" class="span3" />
+				        <button id="settings_btn_create_rsa_key" class="btn">Create</button>
+				      </div>
+				        <p class="help-block">Your PassPhrase to generate your RSA key</p>
+				      </div>
+				  </div>
+				  <div class="control-group">
+				      <label class="control-label">RSA Public Key</label>
+				      <div class="controls">
+				        <textarea id="settings_rsa_public_key" name="rsa_public_key" class="input-xlarge" disabled></textarea>
+				      </div>
+				  </div>
+				  <div class="control-group">
+				      <label class="control-label">CPABE Master Key</label>
+				      <div class="controls">
+				      <div class="input-append">
+				        <input id="settings_cpabe_master_key" name="cpabe_master_key" type="text" class="span3" disabled />
+				        <button id="settings_btn_create_cpabe_key" class="btn">Create</button>
+				      </div>
+				      </div>
+				  </div>
+				  <div class="control-group">
+				      <label class="control-label">CPABE Public Key</label>
+				      <div class="controls">
+				        <textarea id="settings_cpabe_public_key" name="cpabe_public_key" class="input-xlarge" disabled></textarea>
+				      </div>
+				  </div>
+				  <div class="alert alert-block hide" id="change_key_require_password" style="padding: 4px; margin-bottom: 0px;">
+				  <h4>Password Require</h4>
+				  <div class="control-group" style="margin-bottom: 0px;">
+				      <label class="control-label">Password</label>
+				      <div class="controls">
+				        <input name="password_old" type="password" class="span3">
+				        <p class="help-block">To save your setting, please enter your password.</p>
+				      </div>
+				  </div>
+				  </div>
+		        </fieldset>
+		      </form>
+		    </div>
+		    <div class="tab-pane" id="tab4">
+		      <p></p>
+		    </div>
+		  </div>
+		</div>
+		</div>
+
+		<div class="modal-footer">
+		<a href="#" class="btn btn-primary" id="btn_update">Update</a>
+		<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+		</div>
+	</div>
+
+	<div id="privFriends" class="modal hide fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Friendship</h3>
+		</div>
+		<div class="modal-body">
+			<form class="well form-inline" style="padding:10px;">
+				<h6>Add a friend: </h6>
+				<div class="input-prepend">
+	              <span class="add-on">@</span><input id='friend_id' name="id" style="width:118px" placeholder="Friend ID" type="text">
+	            </div>
+	            <input id="friend_txt_policy" name="policy" placeholder="Sharing policy, e.g. family" class="span3" data-provide="typeahead" type="text">
+	            <button class="btn" id="friend_btn_add" type="button">Add!</button>
+	            <button class="btn" id="friend_btn_refresh" type="button"><i class="icon-refresh"></i></button>
+			</form>
+			<div id="div_info"></div>
+			<table class="table table-striped table-bordered" >
+			  <thead>
+			    <tr>
+			      <th style="width:150px;">Friend ID</th>
+			      <th>Sharing Policy</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <!-- <tr>
+			      <td><i>@amislove</i> <span class="badge badge-warning">Pending</span></td>
+			      <td><span class="badge badge-info">friend</span> <span class="badge badge-info">default</span></td>
+			    </tr> -->
+			  </tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+
+
+	<div style='visibility:hidden;width:0px;height:0px;'>
+		<div id='flCloud'>This is a place holder for swf object.</div>
+	</div>
+
+	<!-- Le javascript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- <script src="lib/interface.O2.js"></script> -->
+
+	<script src="lib/swfobject.js"></script>
+	<!-- <script src="lib/worker.js"></script> -->
+	<script src="lib/privio.cloud.js"></script>
+	<script src="js/privio.crypto.js"></script>
+	<script src="js/privio.share.js"></script>
+	<script src="js/privio.js"></script>
+
+  <input id="txt_iter" type="text" value="10">
+  <input id="txt_type" type="text" value="100k">100k 256k 512k 1m 5m 10m
+  <button id='btn_set_iter'>set</button>
+  <div id="controls"></div>
+  <div><pre id="output"></pre></div>
+  <script src="privio.test.crypto.js"></script>
+
+
+
+	<div id="div_frames" class='hide'>
+	</div>
+</body>
+</html>
+
+

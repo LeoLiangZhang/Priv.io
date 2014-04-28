@@ -1,0 +1,34 @@
+TODOs:
+
+== Tue Aug 14 00:08:58 EDT 2012 ==
+
+* Improve Profile reading / saving
+  - Add Dynamic profile saving by timer
+  - Add suspend profile saving
+  - Add resume profile saving
+  - Profile as a service, keep tracking modified data
+    + Multi-section profile, profile is divided into several files
+   	+ load by need
+   	+ encryption by need
+
+* Improve loadObject / saveObject API
+  - auto JSON, add control flag in options
+  - Encryption by need
+
+* Add Realtime messaging
+
+* Add Background page
+
+* Add onmessage event for background page
+
+* Improve usability in NewsFeed and PhotoAlbum
+  - Add profile picture
+  - Change comment to use inline textbox
+  - Improve system information broadcasting
+
+* Add a help page
+
+* Improve dead iframe detection
+(if the target url cannot be reached in iframe, it won't reply postMessage)
+
+* Clean up crypto library

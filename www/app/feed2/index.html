@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/g2/glyphicons.css" type="text/css">
+<link rel="stylesheet" href="feed.main.css" type="text/css">
+
+
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script> -->
+<script type="text/javascript" src="/lib/jquery.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.js"></script>
+
+<!-- <script type="text/javascript" src="http://priv.io/debug/js/privio.crypto.js"></script> -->
+<script type="text/javascript" src="/js/privio.share.js"></script>
+<script type="text/javascript" src="/js/privio.app.js"></script>
+<script type="text/javascript" src="/js/privio.app.newsfeed.js"></script>
+<title>Privio Demo App - News Feed</title>
+</head>
+<body>
+
+<form class="well" style="background-color:white;" id="form_postMessage">
+	<textarea id="message" col="2" class="" style="width:566px;"></textarea>
+
+	<div class="btn-toolbar" style="margin: 0px;">
+		<div class="pull-right">
+			<div id="btn_share">Share button place holder</div>
+			<input type="submit" value="Post" class="btn btn-primary" data-loading-text="Posting..." id="btn_postMsg" />
+		</div>
+		<button id="btn_addmsgpic" class="btn"><i class="icon-picture"></i>Add Photo</button>
+	</div>
+	<input id="input_addmsgpic" type="file" style="display:none" name="photoFile"></input>
+	<div id="photo_preview" style="margin-top:5px;"></div>
+</form>
+
+<div id="msgContainer" class="privio-msg-container"></div>
+
+<div id="privComment" class="modal hide">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Comment</h3>
+			<h5></h5>
+		</div>
+		<div class="modal-body">
+			<form class="form-inline" id="form_postCommentMessage">
+				<input id="parent" type="hidden" name="parent" value="" />
+				<input id="message" type="text" class="input" style="width:80%" placeholder="Your message"></input>
+				<!-- <a class="btn" id="btn_postMsg">Post</a> -->
+				<input type="submit" value="Post" class="btn" id="btn_postMsg" />
+				<!-- <i class="icon-picture"><input type="file" style="opacity:0;z-index:2;position:relative;text-align:right" name="photoFile"></input></i> -->
+             </form>
+		</div>
+	</div>
+
+</body>
+</html>

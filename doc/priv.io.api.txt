@@ -1,0 +1,105 @@
+=Priv.io API =
+
+Most APIs adopt jQuery Deferred Object feature, which means a Deferred Object is return after calling the API method. You can chain operations in such manner,
+  |  pio.login(<username>, <password>).done(function(){//login successfully}).fail(function(){//login fails})
+For more detail, please refer to jQuery page http://api.jquery.com/category/deferred-object/.
+
+
+== SubfS ==
+
+A single cross domain communication API managing basic cloud storage access.
+
++ putObject(access_key, access_secret, bucket, path, value, content_type)
++ getObject(access_key, access_secret, bucket, path)
++ delObject(access_key, access_secret, bucket, path)
++ listObject(access_key, access_secret, bucket, path, offset)
+
+== WebFS ==
+
+A general high level cloud storage API that manages all cross domain connections.
+
++ saveObject(bucket, path, value)
++ loadObject(bucket, path)
++ deleteObject(bucket, path)
++ listObjects(bucket, path, offset)
++ setBucketConfig(bucket, config) // set bucket access policy, e.g. access_key, access_secret, requester_bucket
++ getBucketConfig(bucket)
+
+
+== PIO API ==
+
+A set of API for login user.
+
+High level Idea, in PIO, the API is divided into these logical categories,
+* Profile API
+* Friends Profile API
+* Storage API
+* Friends Communication API
+  - Realtime Communication API
+* Application Shortcut API
+  - Wall API
+
+
+=== Profile API ===
+
++ login(username, password)
++ loadProfile()
++ saveProfile(profile)
+- profileUpdated(eventHandler)
+
+
+=== Friends Profile API ===
+
++ addFriend(friend_username)
+// addFriend2(url)
++ deleteFriend(friend_username)
++ updateFriend(friend_username, crypto_tags)
++ loadFriendProfile(friend_username)
++ listFriends()
+
+
+=== Storage API ===
+
++ saveObject(key, value, crypto_tags)
++ loadObject(username, key)
++ deleteObject(key)
++ listObjects(username, prefix)
+
+=== Friends Communication API ===
+
++ postFriendMessage(message)
++ refresh()
+- receivedFriendMessage(eventHandler)
+
+
+==== Realtime Communication ====
+// To Be Announced
+
+
+=== Wall API ===
+
++ postWallMessage(parent, wall_message)
++ refreshWallFeed()
+- updatedWallMessage(eventHandler)
+
+
+== AppGate API ==
+
+An gateway API for application, e.g. Photo app. Most of APIs in this category are filter API that delegate APP incoming requests to PIO API.
+
++ saveObject(key, value, crypto_tags)
++ loadObject(username, key)
++ deleteObject(key)
++ listObjects(username, prefix)
+
+and a copy of *Profile API*, *Friends Communication API* and *Wall API*.
+
+
+
+
+
+
+
+
+
+

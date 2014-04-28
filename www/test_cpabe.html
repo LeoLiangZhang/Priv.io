@@ -1,0 +1,195 @@
+<html>
+<script src="lib/jquery.js"></script>
+<!-- <script type="text/javascript" src="lib/interface.ok.js"></script> -->
+<script type="text/javascript" src="lib/crypto/cpabe.interface.js"></script>
+<!-- <script type="text/javascript" src="lib/interface.v2.nollvmopts.O2.closure.js"></script> -->
+<body>
+<input id="txt_iter" type="text" value="10">
+<div id="controls"></div>
+<div><pre id="output"></pre></div>
+<script type="text/javascript">
+var $output = $('#output');
+
+cpabe_random_init = Module.cwrap('cpabe_random_init', null, ['int']);
+cpabe_setup = Module.cwrap('cpabe_setup', ['string', 'string']); //[pub, master]
+cpabe_get_private_key = Module.cwrap('cpabe_get_private_key', 'string', ['string', 'string', 'string']); //string
+cpabe_enc = Module.cwrap('cpabe_enc', ['string', 'string'], ['string', 'string']);//[aes, enc_aes]
+cpabe_dec = Module.cwrap('cpabe_dec', 'string', ['string', 'string', 'string']);
+
+var time = function(func, args){
+	  var t0 = new Date().getTime();
+	  var result;
+	  if(args) result = fund.apply(null, args);
+	  else result = func();
+	  t1 = new Date().getTime();
+//	  messagerpc.apply('console_log', [""+func.valueOf(), 'Time elapse (ms):', t1-t0]);
+
+	  return {time: t1-t0, result: result};
+};
+
+var myfunctions = {};
+myfunctions.cpabe_setup = function(){
+	var ret = time(function(){
+		var result = cpabe_setup();
+		return {pub_key: result[0], master_key: result[1]};
+	});
+	console.log('cpabe_setup', ret);
+	//return ret.result;
+	return ret;
+};
+myfunctions.cpabe_get_private_key = function(pub_key, master_key, attributes){
+
+	var ret = time(function(){
+		return cpabe_get_private_key(pub_key, master_key, attributes);
+	});
+	console.log('cpabe_get_private_key', ret, attributes);
+	//return ret.result;
+	return ret;
+};
+myfunctions.cpabe_enc = function(pub_key, policy){
+
+	var ret = time(function(){
+		var result = cpabe_enc(pub_key, policy);
+		return {aes_key: result[0], enc_key: result[1]};
+	});
+	console.log('cpabe_enc', ret, policy);
+	//return ret.result;
+	return ret;
+};
+myfunctions.cpabe_dec = function(pub_key, priv_key, enc_key){
+	var ret = time(function(){
+		return cpabe_dec(pub_key, priv_key, enc_key);
+	});
+	console.log('cpabe_dec', ret, enc_key.length);
+	//return ret.result;
+	return ret;
+};
+
+var cpabe = myfunctions;
+
+var text_output = '';
+var print = function(text) {
+////	$output.val($output.val() + text);
+	text_output += text;
+	$output.text(text_output);
+//	console.log(text);
+};
+var println = function() {
+	var args = [];
+	$.each(arguments, function(i, v){
+		args.push(v);
+	});
+	print(args.join(' ') + "\n");
+};
+var printtabln = function() {
+	var args = [];
+	$.each(arguments, function(i, v){
+		args.push(v);
+	});
+	print(args.join('\t') + "\n");
+};
+
+function foo0(){
+	a = cpabe_setup();
+	console.log(a);
+	b = cpabe_get_private_key(a[0], a[1], "home");
+	console.log(b);
+	c = cpabe_enc(a[0], "home");
+	console.log(c);
+	//d = cpabe_dec(a[0], b, c[1]);
+	d = cpabe_dec(a[0], b, c[1]);
+	console.log(d);
+
+	println(d==c[0]);
+}
+
+var iter = 1; var nwords = 2;
+
+function perf_cpabe(){
+
+	cpabe_random_init(0);
+	
+	var getNWords = function(n){
+		var words = [];
+		$.each(new Array(n), function(i, x){
+			words.push('test'+i);
+		});
+		return words;
+	};
+
+	var getN_1_Words = function(n){
+		return getNWords(n+1);
+	};
+
+	var keygen_policy = "test";
+	var enc_policy = "test";
+
+	var ta, a, tb, b, tc, c, td, d, verify=false;
+
+	var times = {};
+
+	var add_time = function(type, value){
+		var arr = times[type] || [];
+		times[type] = arr;
+		arr.push(value);
+		console.log(type, value);
+	};
+
+	$.each(new Array(iter), function(){
+		//alert('before setup');
+		ta = cpabe.cpabe_setup();
+		//alert('setup');
+		a = ta.result;
+		add_time('cpabe_setup', ta.time);
+	})
+
+	$.each(new Array(nwords), function(i1){
+		var words = getN_1_Words(i1);
+		keygen_policy = words.join(' ');
+		var name = '#'+(i1+1);
+
+		//var words2 = getN_1_Words(i2);
+		enc_policy = words.join(' or ');
+
+
+		$.each(new Array(iter), function(i3){
+			tb = cpabe.cpabe_get_private_key(a.pub_key, a.master_key, keygen_policy);
+			b = tb.result;
+			add_time('cpabe_get_private_key'+name, tb.time);
+
+			tc = cpabe.cpabe_enc(a.pub_key, enc_policy);
+			c = tc.result;
+			add_time('cpabe_enc'+name, tc.time);
+		});
+
+	});
+
+	$.each(new Array(iter), function(i3){
+
+
+		td = cpabe.cpabe_dec(a.pub_key, b, c.enc_key);
+		d = td.result;
+		add_time('cpabe_dec', td.time);
+
+		verify = d == c.aes_key;
+		console.log('verify', verify);
+		println('verify', verify);
+	});
+
+	println(JSON.stringify(times));
+}
+
+$(function(){
+	$('#txt_iter').val(iter);
+	$('#controls').append($('<button>set</button>').click(function(){
+		var t = $('#txt_iter').val();
+		iter = parseInt(t);
+	}));
+
+	var $btn = $('<button>cpabe</button>');
+	$btn.click(perf_cpabe);
+	$('#controls').append($btn);
+});
+</script>
+</body>
+</html>

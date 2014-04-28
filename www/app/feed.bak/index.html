@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://priv.io/debug/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="http://priv.io/css/g2/glyphicons.css" type="text/css">
+<style type="text/css">
+.privio-msg-container {
+  min-height: 20px;
+  /* padding: 19px; */
+  margin-bottom: 20px;
+  /* background-color: #f5f5f5; */
+  background: white;
+  border: 1px solid #eee;
+  /* border: 1px solid rgba(0, 0, 0, 0.05); */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+
+}
+
+.message {
+	border-bottom:1px solid rgba(0, 0, 0, 0.1);
+	padding: 19px;
+	/* border-top-style:solid; *//* dashed; */
+	/* border: 1px solid rgba(0, 0, 0, 0.1); */
+	padding: 12px;
+	padding-bottom: 0px;
+}
+
+.child-message {
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	padding-right: 0;
+}
+
+.message-img-upload-preview {
+	max-width: 40px;
+	max-height: 40px;
+}
+
+.message-img-upload-preview-close {
+	position: absolute;
+	top: -8px;
+	right: 0px;
+	display:none;
+}
+
+.message-img-upload-preview-container{
+	display: inline-block;
+	color: #BBB;
+	border: 2px dashed #BBB;
+	/* border-radius: 5px; */
+	margin-right: 5px;
+	position: relative;
+	width: 40px;
+	height:40px;
+}
+
+.message-child-container {}
+
+.message-comment-container {
+	margin-bottom: 20px;
+}
+
+.message-comment-form{
+	margin-bottom: 0px;
+}
+
+.privio-user-body {}
+
+.message:hover {
+	background-color: rgba(0,0,0,0.05);
+}
+
+.message-meta{
+	margin-left: 50px;
+}
+
+.message-img{}
+
+.message-id {
+	display: none;
+}
+
+.message-left{
+	float:left;
+}
+
+.message-left img{
+	max-width: 40px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+.message-right{
+	float:right;
+}
+
+.message-body{
+	clear:both;
+}
+
+.privio-btn-comment {
+	color: #999;
+}
+
+.privio-btn-comment : hover {
+
+}
+
+body {
+	background-color: transparent;
+}
+</style>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+<script src="http://priv.io/debug/lib/bootstrap/js/bootstrap.js"></script>
+
+<!-- <script type="text/javascript" src="http://priv.io/debug/js/privio.crypto.js"></script> -->
+<script type="text/javascript" src="http://priv.io/debug/js/privio.share.js"></script>
+<script type="text/javascript" src="http://priv.io/debug/js/privio.app.js"></script>
+<script type="text/javascript" src="http://priv.io/debug/js/privio.app.newsfeed.js"></script>
+<title>Privio Demo App - News Feed</title>
+</head>
+<body>
+
+<form class="well" style="background-color:white;" id="form_postMessage">
+	<textarea id="message" col="2" class="" style="width:566px;"></textarea>
+
+	<div class="btn-toolbar" style="margin: 0px;">
+		<div class="pull-right">
+			<div id="btn_share">Share button place holder</div>
+			<input type="submit" value="Post" class="btn btn-primary" data-loading-text="Posting..." id="btn_postMsg" />
+		</div>
+		<button id="btn_addmsgpic" class="btn"><i class="icon-picture"></i>Add Photo</button>
+	</div>
+	<input id="input_addmsgpic" type="file" style="display:none" name="photoFile"></input>
+	<div id="photo_preview" style="margin-top:5px;"></div>
+</form>
+
+<div id="msgContainer" class="privio-msg-container"></div>
+
+<div id="privComment" class="modal hide">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">&times;</a>
+			<h3>Comment</h3>
+			<h5></h5>
+		</div>
+		<div class="modal-body">
+			<form class="form-inline" id="form_postCommentMessage">
+				<input id="parent" type="hidden" name="parent" value="" />
+				<input id="message" type="text" class="input" style="width:80%" placeholder="Your message"></input>
+				<!-- <a class="btn" id="btn_postMsg">Post</a> -->
+				<input type="submit" value="Post" class="btn" id="btn_postMsg" />
+				<!-- <i class="icon-picture"><input type="file" style="opacity:0;z-index:2;position:relative;text-align:right" name="photoFile"></input></i> -->
+             </form>
+		</div>
+	</div>
+
+</body>
+</html>

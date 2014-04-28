@@ -1,0 +1,456 @@
+<html>
+<script src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/crypto/sjcl.js"></script>
+<!-- <script src="lib/Float32Array.js"></script> -->
+
+<!-- <script type="text/javascript" src="lib/interface.ok.js"></script> -->
+<script type="text/javascript" src="lib/crypto/cpabe.interface.js"></script>
+<!-- <script type="text/javascript" src="lib/crypto/cpabe/interface.v2.O0.closure.js"></script> -->
+<!-- <script type="text/javascript" src="lib/interface.ok.js"></script> -->
+<body>
+samples:<input id="txt_iter" type="text" value="10">
+nwords:<input id="txt_nwords" type="text" value="5">
+size:<input id="txt_type" type="text" value="1000k">(pick one: 100k 256k 512k 1000k 1m 5m 10m)
+<div id="controls"></div>
+<div id='status'></div>
+<div><pre id="output"></pre></div>
+<script type="text/javascript">
+
+var time = function(func, args){
+	  var t0 = new Date().getTime();
+	  var result;
+	  if(args) result = fund.apply(null, args);
+	  else result = func();
+	  t1 = new Date().getTime();
+//	  messagerpc.apply('console_log', [""+func.valueOf(), 'Time elapse (ms):', t1-t0]);
+
+	  return {time: t1-t0, result: result};
+};
+
+var remote_log = function(){
+	var params = $.makeArray(arguments);
+	var buffer = [params];
+	var data = JSON.stringify(buffer);
+	$('#status').text("Posting "+data.length+" bytes data to server.");
+	jQuery.post("/local_logging/log", data).done(function(){
+		$('#status').text("Logging sucessful");
+	}).fail(function(){
+		$('#status').text("Logging fail", $(this));
+	});
+}
+
+
+var $output = $('#output');
+
+var text_output = '';
+var print = function(text) {
+////	$output.val($output.val() + text);
+	text_output += text;
+	$output.text(text_output);
+//	console.log(text);
+};
+var println = function() {
+	var args = [];
+	$.each(arguments, function(i, v){
+		args.push(v);
+	});
+	print(args.join(' ') + "\n");
+};
+var printtabln = function() {
+	var args = [];
+	$.each(arguments, function(i, v){
+		args.push(v);
+	});
+	print(args.join('\t') + "\n");
+};
+
+var iter = 1;
+
+var filenames1 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 500K 600K 700K 800K 900K 1000K 1M 2M 5M 10M".split(' ');
+var filenames2 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 500K 600K 700K 800K 900K 1000K 1M 2M 5M".split(' ');
+var filenames3 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 500K 600K 700K 800K 900K 1000K 1M".split(' ');
+var filenames3_1 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 500K 600K 700K 800K 900K 1000K".split(' ');
+var filenames4 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 512K".split(' ');
+var filenames5 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 256K".split(' ');
+var filenames6 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K".split(' ');
+var filenames = filenames1;
+
+
+
+var sizes = [];
+
+function setSizes(){
+	var K = 1024, M = K*K;
+
+	sizes = [];
+	$.each(filenames, function(i, name){
+		if(name.indexOf('K')>=0){
+			var f = parseFloat(name.replace('K', ''));
+			sizes.push(f*K);
+		} else {
+			var f = parseFloat(name.replace('M', ''));
+			sizes.push(f*M);
+		}
+	});
+}
+setSizes();
+
+var generate_random_string = function(size){
+	var buf = '';
+	for(var i = 0; i < size; i ++){
+		var n = 127-32;
+		var c = String.fromCharCode(Math.floor((Math.random()*n)+32));
+		buf += c;
+	}
+	return buf;
+};
+
+var generate_data_files = function(si){
+	var files = {};
+	$.each(filenames, function(i, name){
+		files[name] = generate_random_string(sizes[i]);
+	});
+	return files;
+};
+
+
+var perf_aes = function(){
+	var password = 'password';
+
+	var enc_times = {};
+	var dec_times = {};
+	$.each(filenames, function(i, name){
+		enc_times[name] = [];
+		dec_times[name] = [];
+	});
+
+	var s = '';
+	$.each(new Array(10), function(){
+		s += sjcl.decrypt('worm up', sjcl.encrypt('worm up', 'worm up text'+Math.random()));
+	});
+
+	$.each(new Array(iter), function(){
+		var encrypted_data = {};
+
+		console.log('Begin generating data files');
+		var test_files = generate_data_files();
+		console.log('Finish generating data files');
+
+		$.each(test_files, function(name, data){
+			console.log('encrypt', name, data.length);
+			var r = time(function(){
+				return sjcl.encrypt(password, data);
+			});
+			//encrypted_data[name] = r.result;
+			enc_times[name].push(r.time);
+
+			data = r.result;
+			console.log('decrypt', name, data.length);
+			var r = time(function(){
+				return sjcl.decrypt(password, data);
+			});
+			dec_times[name].push(r.time);
+		});
+	});
+
+	println(JSON.stringify({
+		enc_times: enc_times, dec_times: dec_times
+	}));
+};
+
+
+cpabe_setup = Module.cwrap('cpabe_setup', ['string', 'string']); //[pub, master]
+cpabe_get_private_key = Module.cwrap('cpabe_get_private_key', 'string', ['string', 'string', 'string']); //string
+cpabe_enc = Module.cwrap('cpabe_enc', ['string', 'string'], ['string', 'string']);//[aes, enc_aes]
+cpabe_dec = Module.cwrap('cpabe_dec', 'string', ['string', 'string', 'string']);
+
+var myfunctions = {};
+myfunctions.cpabe_setup = function(){
+	var ret = time(function(){
+		var result = cpabe_setup();
+		return {pub_key: result[0], master_key: result[1]};
+	});
+	console.log('cpabe_setup', ret);
+	//return ret.result;
+	return ret;
+};
+myfunctions.cpabe_get_private_key = function(pub_key, master_key, attributes){
+
+	var ret = time(function(){
+		return cpabe_get_private_key(pub_key, master_key, attributes);
+	});
+	console.log('cpabe_get_private_key', ret, attributes);
+	//return ret.result;
+	return ret;
+};
+myfunctions.cpabe_enc = function(pub_key, policy){
+
+	var ret = time(function(){
+		var result = cpabe_enc(pub_key, policy);
+		return {aes_key: result[0], enc_key: result[1]};
+	});
+	console.log('cpabe_enc', ret, policy);
+	//return ret.result;
+	return ret;
+};
+myfunctions.cpabe_dec = function(pub_key, priv_key, enc_key){
+	var ret = time(function(){
+		return cpabe_dec(pub_key, priv_key, enc_key);
+	});
+	console.log('cpabe_dec', ret, enc_key.length);
+	//return ret.result;
+	return ret;
+};
+
+var cpabe = myfunctions;
+
+var nwords = 10;
+
+function perf_cpabe(){
+
+	//print("perf_cpabe", "starting", new Date());
+	
+	var getNWords = function(n){
+		var words = [];
+		$.each(new Array(n), function(i, x){
+			words.push('test'+i);
+		});
+		return words;
+	};
+
+	var getN_1_Words = function(n){
+		return getNWords(n+1);
+	};
+
+	var keygen_policy = "test";
+	var enc_policy = "test";
+
+	var ta, a, tb, b, tc, c, td, d, verify=false;
+
+	var times = {};
+
+	var add_time = function(type, value){
+		var arr = times[type] || [];
+		times[type] = arr;
+		arr.push(value);
+		console.log(type, value);
+	};
+
+	$.each(new Array(iter), function(){
+		//alert('before setup');
+		ta = cpabe.cpabe_setup();
+		//alert('setup');
+		a = ta.result;
+		add_time('cpabe_setup', ta.time);
+	})
+
+	$.each(new Array(nwords), function(i1){
+		var words = getN_1_Words(i1);
+		keygen_policy = words.join(' ');
+		var name = '#'+(i1+1);
+
+		enc_policy = words.join(' or ');
+
+
+		$.each(new Array(iter), function(i3){
+			tb = cpabe.cpabe_get_private_key(a.pub_key, a.master_key, keygen_policy);
+			b = tb.result;
+			add_time('cpabe_get_private_key'+name, tb.time);
+
+			tc = cpabe.cpabe_enc(a.pub_key, enc_policy);
+			c = tc.result;
+			add_time('cpabe_enc'+name, tc.time);
+		});
+
+	});
+
+	$.each(new Array(iter), function(i3){
+
+
+		td = cpabe.cpabe_dec(a.pub_key, b, c.enc_key);
+		d = td.result;
+		add_time('cpabe_dec', td.time);
+
+		verify = d == c.aes_key;
+		console.log('verify', verify);
+	});
+
+	println(JSON.stringify(times));
+}
+
+
+var store_aes = function(){
+
+	var enc_times = []
+	var password = 'password';
+
+	console.log('Begin generating data files');
+	var test_files = generate_data_files();
+	console.log('Finish generating data files');
+
+	console.log('#type', 'name', 'data_size', 'result_size', 'time');
+	println('#type', 'name', 'data_size', 'result_size', 'time');
+	$.each(test_files, function(name, data){
+		var r = time(function(){
+			return sjcl.encrypt(password, data);
+		});
+		console.log('encrypt', name, data.length, r.result.length, r.time);
+		println('encrypt', name, data.length, r.result.length, r.time);
+		//encrypted_data[name] = r.result;
+		//enc_times[name].push(r.time);
+		//enc_times.push([data.length, r.result.length]);
+	});
+
+	//println(enc_times);
+};
+
+    var cpabe_size = function(){
+        $.each(new Array(10), function(){
+               var ta = cpabe.cpabe_setup();
+               var ret = ta.result;
+               console.log("master_key", ret.master_key.length, "pub_key", ret.pub_key.length)
+               });
+    }
+
+var store_cpabe = function(){
+
+	var getNWords = function(n){
+		var words = [];
+		$.each(new Array(n), function(i, x){
+			words.push('test'+i);
+		});
+		return words;
+	};
+
+	var getN_1_Words = function(n){
+		return getNWords(n+1);
+	};
+
+	var keygen_policy = "test";
+	var enc_policy = "test";
+
+	var ta, a, tb, b, tc, c, td, d, verify=false;
+
+
+	console.log('cpabe_setup...');
+	ta = cpabe.cpabe_setup();
+	a = ta.result;
+
+	println('#attrs', 'keygen_size', 'enc_key_size')
+	$.each(new Array(nwords), function(i1){
+		var words = getN_1_Words(i1);
+		keygen_policy = words.join(' ');
+		var n = i1+1;
+		var name = '#'+(n);
+		enc_policy = words.join(' or ');
+
+		console.log('cpabe_key_gen...', n);
+		tb = cpabe.cpabe_get_private_key(a.pub_key, a.master_key, keygen_policy);
+		b = tb.result;
+
+		console.log('cpabe_enc...', n);
+		tc = cpabe.cpabe_enc(a.pub_key, enc_policy);
+		c = tc.result;
+
+		println(n, b.length, c.enc_key.length);
+	});
+
+};
+
+var gen_profile = function(){
+	var getNWords = function(n){
+		var words = [];
+		$.each(new Array(n), function(i, x){
+			words.push('test'+i);
+		});
+		return words;
+	};
+
+	var getN_1_Words = function(n){
+		return getNWords(n+1);
+	};
+
+	var keygen_policy = "test";
+	var enc_policy = "test";
+
+	var ta, a, tb, b, tc, c, td, d, verify=false;
+
+
+	console.log('cpabe_setup...');
+	ta = cpabe.cpabe_setup();
+	a = ta.result;
+
+	tb = cpabe.cpabe_get_private_key(a.pub_key, a.master_key, "@@self");
+	b = tb.result;
+
+	var cred = {access_key: 'XXXXXXXXXXXXXXXXXXXX',
+				access_secret: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'};
+
+	var obj = {c0: cred, c1:cred, master:a.master_key, priv_self:b};
+	var s = JSON.stringify(obj);
+	var es = sjcl.encrypt('password', s);
+
+	//println(s);
+	println(s.length, es.length)
+
+};
+
+
+$(function(){
+	var init = function(){
+		var t = $('#txt_iter').val();
+		iter = parseInt(t);
+
+		var t = $("#txt_nwords").val();
+		nwords = parseInt(t);
+
+		var s = $("#txt_type").val();
+		s = s.toLowerCase();
+		var f = filenames1;
+		switch(s){
+		case "10m":
+			f = filenames1;
+			break;
+		case "5m":
+			f = filenames2;
+			break;
+		case "1m":
+			f = filenames3;
+			break;
+		case "1000k":
+			f = filenames3_1;
+			break;
+		case "512k":
+			f = filenames4;
+			break;
+		case "256k":
+			f = filenames5;
+			break;
+		case "100k":
+			f = filenames6;
+			break;
+		}
+		filenames = f;
+		setSizes();
+		console.log([filenames]);
+		console.log([iter, nwords]);
+	};
+	init();
+
+	//$('#txt_iter').val(iter);
+	$('#controls').append($('<button>set</button>').click(init));
+
+	$('#controls').append($('<button>aes</button>').click(perf_aes));
+	$('#controls').append($('<button>cpabe</button>').click(perf_cpabe));
+
+	$('#controls').append($('<button>store_aes</button>').click(store_aes));
+	$('#controls').append($('<button>store_aes</button>').click(store_cpabe));
+	$('#controls').append($('<button>gen_profile</button>').click(gen_profile));
+
+	$('#controls').append($('<button>log</button>').click(function(){
+		remote_log(text_output);
+	}));
+});
+</script>
+</body>
+</html>

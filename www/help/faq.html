@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Priv.io FAQ</title>
+<link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<script src="/lib/jquery.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.js"></script>
+<style>
+.plain {
+
+/* This centers the image */
+display: block;
+margin-left: auto;
+margin-right: auto;
+
+/* This adds the border */
+padding:8px;
+border:solid;
+border-color: #dddddd #aaaaaa #aaaaaa #dddddd;
+border-width: 1px 2px 2px 1px;
+background-color:white;
+
+}
+
+.sidenav {
+width: 183px;
+/* margin: 30px 0 0;
+padding: 0; */
+padding: 8px 15px;
+background-color: white;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, .065);
+-moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+box-shadow: 0 1px 4px rgba(0, 0, 0, .065);
+}
+
+.sidenav .icon-chevron-right {
+float: right;
+margin-top: 2px;
+margin-right: -6px;
+opacity: .25;
+}
+
+.figure {
+  width: 250px;
+  float: right;
+  margin: 2px;
+}
+
+</style>
+<script>
+$(function(){
+  var $window = $(window);
+
+
+
+/*   $(window).on('resize', function(){
+
+	  $('.nav-list').affix({
+	      offset: {
+	        top: 0//function () { return $window.width() <= 980 ? 290 : 210 }
+	      //, bottom: 270
+	      }
+	  })
+
+      $('body').scrollspy('refresh');
+
+  });
+ */
+
+});
+</script>
+</head>
+<body data-spy="scroll" style="position: relative;">
+
+
+<div class="row">
+	<div class="span8">
+       <div class="bs-docs-example">
+         <div class="accordion" id="accordion2">
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
+                 What is Priv.io?
+               </a>
+             </div>
+             <div id="collapse1" class="accordion-body collapse in">
+               <div class="accordion-inner">
+                 <p>Priv.io represents a new way of architecting Web-based content-sharing services like Twitter, Facebook, and Tumblr.  Today all of these sites work by providing service to you, the end user, for free.  To pay the bills, the respective companies are forced to sell advertising.   Unfortunately, this advertising isn't just annoying, it is potentially the source of privacy leaks of your data to third-parties.</p>
+                 <p>In Priv.io, we build a <strong>confederated</strong> web site by having each user continue and pay for the storage and bandwidth required to serve their content.  In other words, your content is served by the service that you designate, while your friends' content may be served by a different service.  Priv.io uses encryption to ensure that people can only view what you allow them to (and even your service provider cannot view your content).  Even with the dramatically different architecture, the service looks just like a normal web site.</p>
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse2">
+                 How does it work?
+               </a>
+             </div>
+             <div id="collapse2" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 <p>In Priv.io, each user contracts with a <em>service provider</em> who stores and serves their content (i.e., your service provider stores and serves your photos, comments, etc).  Thus, your content may be served by Amazon's S3, while your friend's content is served by DropBox.   Priv.io is implemented in JavaScript, and ensures that you can view your friends' content, regardless of whether they are on the same service provider as you or not.  </p>
+                 <p>Today, Priv.io is written to work only with Amazon's S3 as a service provider.  We are actively working to extend Priv.io support to work with other services providers, including Azure, DropBox, and even Web-DAV servers of your choice.</p>
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">
+                 How much does it cost?
+               </a>
+             </div>
+             <div id="collapse3" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 Priv.io itself is free and open source.  But, since you are contracting with a service provider (e.g., S3) to store and serve your content, you may have to pay them for the resources you use.  We are still investigating how much users can expect to pay, but we can say that storing and downloading 2 GB of content per month (much more than most users typically do) from S3 only costs $0.24.
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse4">
+                 Where is my data stored?
+               </a>
+             </div>
+             <div id="collapse4" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 Your data is stored on the service provider that you contract with.  Your data is encrypted, ensuring that even the service provider cannot read it.
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
+                 Can I switch service providers?
+               </a>
+             </div>
+             <div id="collapse5" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 Of course.  Once you sign into your account, you are able to switch your service provider to any other that you choose.
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
+                 How is Priv.io's content encrypted?
+               </a>
+             </div>
+             <div id="collapse6" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 <p>Encryption of content in Priv.io is done primary using <em>attribute-based encryption</em>.  In brief, this allows you to easily encrypt and decrypt content for different subsets of your friends, depending on who you want to be able to access content.  Priv.io also uses RSA and AES to make attribute-based encryption more efficient.</p>
+                 <p>All encryption and decryption is done within your browser, so any content you store on your service provider is already encrypted.  </p>
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse7">
+                 Does Priv.io support third-party apps?
+               </a>
+             </div>
+             <div id="collapse7" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 Third-party apps (e.g., Farmville) are a popular extension to many content sharing sites.  Priv.io provides support for third-party apps and provides an API for these apps to be built.  However, unlike most other third-party app APIs (e.g., Facebook, Twitter), the API is actually implemented <em>within your browser</em>, meaning your browser runs the app in a sandboxed iframe and allows the app only to do things you allow.  For example, you may allow (or prevent) an app from reading your photos, and this protection is provided by your browser.
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse8">
+                 But, doesn't the Priv.io web server see my activity?
+               </a>
+             </div>
+             <div id="collapse8" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 Great question!  The brief answer is no: The Priv.io web server only sees two types of requests.  First, it gives you the source JavaScript that implements Priv.io (this happens when you first load the Priv.io page).  Second, it serves as a directory (via DNS) which mapping users to their storage providers.  Thus, once you load the homepage, all other requests go directly to service providers.  Priv.io doesn't know anything about the content your share or who your friends are.  You can trace your browser's activity to see this.
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse9">
+                 How is Priv.io different from … ?
+               </a>
+             </div>
+             <div id="collapse9" class="accordion-body collapse">
+               <div class="accordion-inner">
+               	 <p>There are a number of competing approaches to Priv.io.  In brief, these can be broken down into</p>
+               	 <ul>
+               	   <li>Approaches that create a fully decentralized service (e.g., Diaspora*).  Unfortunately, these require additional software and generally do not work inside a web browser.</li>
+               	   <li>Approaches that encrypt content you store on traditional web sites (e.g., http://priv.ly).  These services also generally require browser extensions to work.</li>
+               	   <li>Approaches that have users each run their own server (e.g., http://tent.io).  We believe that this is too course-grained of an approach; most users do not need an entire server (and the resulting costs are likely to be too high).</li>
+               	 </ul>
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse10">
+                 How can I find out more?
+               </a>
+             </div>
+             <div id="collapse10" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 Email <a href="mailto:info@priv.io">info@priv.io</a>info@priv.io for more information.
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse11">
+                 Who is behind Priv.io?
+               </a>
+             </div>
+             <div id="collapse11" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 Priv.io is the product of researchers in the College of Computer and Information Science at Northeastern University.  The principal researchers are Liang Zhang and Alan Mislove, with help from Chloe Kliman-Silver.
+               </div>
+             </div>
+           </div>
+           <div class="accordion-group">
+             <div class="accordion-heading">
+               <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse12">
+                 How can I try it out?
+               </a>
+             </div>
+             <div id="collapse12" class="accordion-body collapse">
+               <div class="accordion-inner">
+                 <p>Go to http://priv.io and sign up!</p>
+                 <p>Right now, we only support Amazon's S3 as a service provider.  So, to sign up, you'll also need an AWS access key and secret key (available once you sign up with AWS).</p>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+	</div>
+</div>
+
+
+</body>
+</html>

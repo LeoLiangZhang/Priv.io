@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://priv.io/debug/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="http://priv.io/css/g2/glyphicons.css" type="text/css">
+<style type="text/css">
+body {
+	background-color: transparent;
+}
+</style>
+<script type="text/javascript" src="http://priv.io/debug/lib/jquery.js"></script>
+<script src="http://priv.io/debug/lib/bootstrap/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="http://priv.io/debug/js/privio.app.js"></script>
+<script type="text/javascript" src="http://priv.io/debug/js/privio.app.photoalbum.js"></script>
+<title>Privio Demo App - Photo Album</title>
+</head>
+<body>
+
+<span id='btn_addAlbum' class="btn btn-info" >+</span>
+
+<div id='div_createAlbum' class='well hide'>
+<form class="form-inline">
+<input  type="text" name="album_name" placeholder="Album Name"></input>
+<div id="btn_share"><!-- Share button place holder --></div>
+<button class='btn btn-primary'>Add</button>
+<!-- <input id="policy" type="text" class="input" style="width:70%" placeholder="Your sharing policy"></input> -->
+</form>
+<div id="drop_zone" class="well" style="text-align: center;color: #BBB;border: 2px dashed #BBB;border-radius: 5px;">Drop Photos here</div>
+<output id="list"></output>
+</div>
+
+<div class=well>
+Albums
+<div id='div_albumContainer'></div>
+</div>
+
+</body>
+</html>

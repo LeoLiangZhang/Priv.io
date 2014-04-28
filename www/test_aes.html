@@ -1,0 +1,175 @@
+<html>
+<script src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/crypto/sjcl.js"></script>
+<body>
+<input id="txt_iter" type="text" value="10">
+<input id="txt_type" type="text" value="100k">100k 256k 512k 1m 5m 10m
+<div id="controls"></div>
+<div><pre id="output"></pre></div>
+<script type="text/javascript">
+var $output = $('#output');
+
+var time = function(func, args){
+	  var t0 = new Date().getTime();
+	  var result;
+	  if(args) result = fund.apply(null, args);
+	  else result = func();
+	  t1 = new Date().getTime();
+//	  messagerpc.apply('console_log', [""+func.valueOf(), 'Time elapse (ms):', t1-t0]);
+
+	  return {time: t1-t0, result: result};
+};
+
+var text_output = '';
+var print = function(text) {
+////	$output.val($output.val() + text);
+	text_output += text;
+	$output.text(text_output);
+//	console.log(text);
+};
+var println = function() {
+	var args = [];
+	$.each(arguments, function(i, v){
+		args.push(v);
+	});
+	print(args.join(' ') + "\n");
+};
+var printtabln = function() {
+	var args = [];
+	$.each(arguments, function(i, v){
+		args.push(v);
+	});
+	print(args.join('\t') + "\n");
+};
+
+var iter = 1;
+
+var filenames1 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 500K 600K 700K 800K 900K 1000K 1M 2M 5M 10M".split(' ');
+var filenames2 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 500K 600K 700K 800K 900K 1000K 1M 2M 5M".split(' ');
+var filenames3 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 500K 600K 700K 800K 900K 1000K 1M".split(' ');
+var filenames4 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 200K 300K 400K 512K".split(' ');
+var filenames5 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K 256K".split(' ');
+var filenames6 = "0.005K 0.1K 0.2K 0.3K 0.4K 0.5K 0.6K 0.7K 0.8K 0.9K 1K 2K 3K 4K 5K 6K 7K 8K 9K 10K 20K 30K 40K 50K 60K 70K 80K 90K 100K".split(' ');
+var filenames = filenames6;
+var K = 1024, M = K*K;
+//var sizes = [K, 10*K, 512*K, M, 1.5*M, 2*M, 5*M, 10*M];
+var sizes = [];
+
+function setSizes(){
+	$.each(filenames, function(i, name){
+		if(name.indexOf('K')>=0){
+			var f = parseFloat(name.replace('K', ''));
+			sizes.push(f*K);
+		} else {
+			var f = parseFloat(name.replace('M', ''));
+			sizes.push(f*M);
+		}
+	});
+}
+setSizes();
+
+var generate_random_string = function(size){
+	var buf = '';
+	for(var i = 0; i < size; i ++){
+		var n = 127-32;
+		var c = String.fromCharCode(Math.floor((Math.random()*n)+32));
+		buf += c;
+	}
+	return buf;
+};
+
+var generate_data_files = function(si){
+	var files = {};
+	$.each(filenames, function(i, name){
+		files[name] = generate_random_string(sizes[i]);
+	});
+	return files;
+};
+
+
+var perf_aes = function(){
+	var password = 'password';
+
+	var enc_times = {};
+	var dec_times = {};
+	$.each(filenames, function(i, name){
+		enc_times[name] = [];
+		dec_times[name] = [];
+	});
+
+	var s = '';
+	$.each(new Array(10), function(){
+		s += sjcl.decrypt('worm up', sjcl.encrypt('worm up', 'worm up text'+Math.random()));
+	});
+
+	$.each(new Array(iter), function(){
+		var encrypted_data = {};
+
+		console.log('Begin generating data files');
+		var test_files = generate_data_files();
+		console.log('Finish generating data files');
+
+		$.each(test_files, function(name, data){
+			console.log('encrypt', name, data.length);
+			var r = time(function(){
+				return sjcl.encrypt(password, data);
+			});
+			encrypted_data[name] = r.result;
+			enc_times[name].push(r.time);
+		});
+
+		$.each(encrypted_data, function(name, data){
+			console.log('decrypt', name, data.length);
+			var r = time(function(){
+				return sjcl.decrypt(password, data);
+			});
+			dec_times[name].push(r.time);
+		});
+	});
+
+	println(JSON.stringify({
+		enc_times: enc_times, dec_times: dec_times
+	}));
+};
+
+
+
+$(function(){
+	$('#txt_iter').val(iter);
+	$('#controls').append($('<button>set</button>').click(function(){
+		var t = $('#txt_iter').val();
+		iter = parseInt(t);
+
+		var s = $("#txt_type").val();
+		s = s.toLowerCase();
+		var f = filenames1;
+		switch(s){
+		case "10m":
+			f = filenames1;
+			break;
+		case "5m":
+			f = filenames2;
+			break;
+		case "1m":
+			f = filenames3;
+			break;
+		case "512k":
+			f = filenames4;
+			break;
+		case "256k":
+			f = filenames5;
+			break;
+		case "100k":
+			f = filenames6;
+			break;
+		}
+		filenames = f;
+		setSizes();
+
+	}));
+
+	$('#controls').append($('<button>aes</button>').click(perf_aes));
+});
+</script>
+</body>
+</html>

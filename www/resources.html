@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Priv.io Resources</title>
+<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="css/privio.css" rel="stylesheet">
+<script src="lib/jquery.js"></script>
+<script src="lib/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+
+<div id="privFriends" class="modal">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">&times;</a>
+		<h3>Friendship</h3>
+	</div>
+	<div class="modal-body">
+		<form class="well form-inline" style="padding:10px;">
+			<h6>Add a friend: </h6>
+			<div class="input-prepend">
+              <span class="add-on">@</span><input name="id" style="width:118px" placeholder="Friend ID" type="text">
+            </div>
+            <input id="friend_txt_policy" name="policy" placeholder="Sharing policy, e.g. family"  class="span3" data-provide="typeahead" type="text">
+            <button class="btn" id="friend_btn_add" type="button">Add!</button>
+		</form>
+		<table class="table table-striped table-bordered" >
+		  <thead>
+		    <tr>
+		      <th style="width:150px;">Friend ID</th>
+		      <th>Sharing Policy</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <td><i>@amislove</i> <span class="badge badge-warning">Pending</span></td>
+		      <td><span class="badge badge-info">friend</span> <span class="badge badge-info">default</span></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+	</div>
+</div>
+
+
+<script>
+// $('#privFriends').modal('show');
+var options = {
+	source: ['friend', 'family', 'colleague', 'close_friend', 'temp', 'test'],
+	items: 8,
+	matcher: function(item){console.log(this.query, item); return true}
+}
+$('#friend_txt_policy').typeahead(options);
+</script>
+</body>
+</html>

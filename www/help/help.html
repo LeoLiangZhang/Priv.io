@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Priv.io Help</title>
+<link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+<script src="/lib/jquery.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.js"></script>
+<style>
+.plain {
+
+/* This centers the image */
+display: block;
+margin-left: auto;
+margin-right: auto;
+
+/* This adds the border */
+padding:8px;
+border:solid;
+border-color: #dddddd #aaaaaa #aaaaaa #dddddd;
+border-width: 1px 2px 2px 1px;
+background-color:white;
+
+}
+
+.sidenav {
+width: 183px;
+/* margin: 30px 0 0;
+padding: 0; */
+padding: 8px 15px;
+background-color: white;
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, .065);
+-moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+box-shadow: 0 1px 4px rgba(0, 0, 0, .065);
+}
+
+.sidenav .icon-chevron-right {
+float: right;
+margin-top: 2px;
+margin-right: -6px;
+opacity: .25;
+}
+
+.figure {
+  width: 250px;
+  float: right;
+  margin: 2px;
+}
+
+</style>
+<script>
+$(function(){
+  var $window = $(window);
+
+
+
+  $(window).on('resize', function(){
+
+	  $('.nav-list').affix({
+	      offset: {
+	        top: 0//function () { return $window.width() <= 980 ? 290 : 210 }
+	      //, bottom: 270
+	      }
+	  })
+
+      $('body').scrollspy('refresh');
+
+  });
+
+
+});
+</script>
+</head>
+<body data-spy="scroll" style="position: relative;">
+
+
+<div class="row">
+	<div class="span3">
+		<div id="helpNavi" class="" style="padding: 1px; ">
+			<ul class="well nav nav-list sidenav" >
+				<li class="active"><i class="icon-chevron-right"></i><a href="#Registration"><i class="icon-edit"></i>Registration</a></li>
+				<li><a href="#Friends"><i class="icon-chevron-right"></i><i class="icon-plus-sign"></i>Add Friends</a></li>
+				<li><a href="#S3"><i class="icon-chevron-right"></i><i class="icon-lock"></i>S3 Keys</a></li>
+				<li><a href="#Limit"><i class="icon-chevron-right"></i><i class="icon-user"></i>Limit Audience</a></li>
+				<li><a href="#Post"><i class="icon-chevron-right"></i><i class="icon-comment"></i>Posting</a></li>
+				<li><a href="#Album"><i class="icon-chevron-right"></i><i class="icon-picture"></i>Photo Album</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="span7">
+		<section>
+		<h2>
+		<a id="Registration">How to Register </a> </h2>
+		<p>
+		<ol>
+		<li>On the priv.io home page, click "Registration." </li>
+		</p>
+		<p>
+		<li>Enter your desired username, password, and email.  </li>
+		</p>
+		<p>
+		<img class="plain figure" src="storage.png" alt="Storage">
+		<li>The “type of storage” dropdown menu has three options: Amazon S3, WebDAV, and Dropbox. Click the one you want connected to your priv.io account. </li>
+		<br style="clear:both">
+		</p>
+		<p>
+		<li>In the next two boxes, put the Access Key and the Secret Key to the above account. Please click <a href="#S3"> here </a> if you want more information on S3 keys. </li>
+		</p>
+		<p>
+		<li>Click the “Register” button.  </li> </ol>
+		</p>
+		<span class="label label-info">Heads up!</span> Please wait while system setting up your account. This might take some time.
+		</section>
+		<section>
+		<h2>
+		<a id="Friends">How to add Friends </a> </h2>
+		<p>
+		<ol> <li>You will need to know your friend's username and he/she will need to know yours, so make sure you both have this information. </li>
+		</p>
+		<p>
+		<li>Sign in to your priv.io page and click on the "Friends" link on the upper left of the page. </li>
+		</p>
+		<p>
+		<li>Enter your friend's username in the "Friend ID." </li>
+		</p>
+		<p>
+		<li>In the next box, you need to decide how information will be shared. You can choose one or more sharing policies. </li>
+		</p>
+
+		<p>
+		<img class="plain figure" src="friend_pending.png" alt="Friend Pending">
+		<li>Click on the "Add!" button. Your friend's username will appear in the Friend ID column, with a status of "pending". </li>
+		<br style="clear:both">
+		</p>
+
+		<p>
+		<img class="plain figure" src="friend_accepted.png" alt="Friend Accepted">
+		<li>Once your friend accepts your friend request, the "pending" status will be removed. </li> </ol>
+		<br style="clear:both">
+		</p>
+
+		</section>
+
+		<section>
+		<h2>
+		<a id="S3">S3 Keys  </a> </h2>
+		<p>
+		<ul>
+		<p><li>One of the storage types supported by Priv.io is Amazon Simple Storage
+		Service (S3). </li> </p>
+		<p><li>To use this storage type, you will need an access key and a secret key. The access
+		key is a form of username, while the secret key is a password. Together, these keys allow photos
+		and information stored in your cloud to be displayed on your priv.io page. </p> </li>
+		<p><li> If you need keys for S3 storage, email Liang Zhang at liang@ccs.neu.edu. </p> </li>
+		</ul> </section>
+
+		<section>
+		<h2>
+		<a id="Limit">Limiting Audience  </a> </h2>
+		<p>
+		<ol> <li>For each post or album you make, you can decide which of your friends
+		should be able to see it. </p> <p> </li>
+		<img class="plain figure" src="friend.png" alt="Sharing policy">
+		<li>You can type the sharing policy or policies (i.e. friend or family), the username or usernames
+		of specific friends (i.e. chloe or liang), or type “@@” which shares the content with all
+		your friends. If you write multiple tags, they should be separated by
+		a single space (i.e. friend family chloe) </p> <p> </li> </ol>
+		</section>
+		<section>
+		<h2>
+		<a id="Post">How to Post a Message or Photo  </a> </h2>
+		<p>
+		<img class="plain figure" src="message.png" alt="Message">
+		<ol> <li>After signing in, your home page will display two boxes. One says
+		“Your message” and the other one says “Your sharing policy.” </p> <p> </li>
+		<li>Type what you want to say in the first box or click the photo button
+		to add a picture. </p> <p> </li>
+		<li>Decide which of your friends you want to see your message. Click <a href="#Limit">here </a>for information on sharing policies. <br></li> </ol>
+		<span class="label label-info">Heads up!</span> It may take several minutes for your friends to see your message or photo.
+		<p>
+		</section>
+		<section>
+		<h2>
+		<a id="Album"> How to Post a Photo Album  </a> </h2>
+		<p>
+		<img class="plain figure" src="sidebar.png" alt="Sidebar">
+		<ol> <li>On your home page, click on the link on your sidebar that says “Photo Album.” </li>
+		<br style="clear:both"> </p> <p>
+		<img class="plain figure" src="photo.png" alt="Photo Button">
+		<li>Click the blue button above where it says “Album.” </p> <p></li>
+		<li>In the boxes that say “Album name” and “Your sharing policy,” add the
+		title of the album and the sharing policy respectively.  Click <a href="#Limit">here </a>for information on sharing policies. </p> <p> </li>
+		<li>Select the photos you want to upload from your computer and drag them
+		to the box that says “Drop photos here.” Note: you will need to drag
+		all the photos at once or else they will not all load. </p> <br> </li> <ol>
+		<span class="label label-info">Heads up!</span> It may take several minutes for your friends to see your photo album.
+		<p>
+		</section>
+
+	</div>
+
+</div>
+</body>
+</html>

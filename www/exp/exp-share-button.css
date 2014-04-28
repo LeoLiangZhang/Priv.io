@@ -1,0 +1,67 @@
+.extend-dropdown-menu {
+	position: absolute;
+	top: -3px;
+	right: 100%;
+	z-index: 1000;
+	display: none;
+	float: left;
+	width: 160px;
+	margin: 2px;
+	list-style: none;
+	background-color: white;
+	border: 1px solid #CCC;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
+}
+
+.extend-dropdown-menu-header {
+	padding: 3px 14px;
+	background-color: #EBEBEB;
+	border-radius: 6px 6px 0px 0px;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.extend-dropdown-menu-content {
+	white-space: normal;
+	padding: 8px;
+}
+
+.extend-dropdown-menu-container {
+	position: relative;
+}
+
+.extend-dropdown-menu-content .btn.badge {
+	margin: 0px;
+}
+
+.select .extend-dropdown-menu {
+	display: block;
+}
+
+.jq-animation {
+	display: none;
+}
+
+.select .extend-dropdown-menu.jq-animation {
+	display: none;
+}
+
+.badge.btn{
+	font-weight: normal;
+}
+
+.badge.btn.active{
+	font-weight: bold;
+}
+
+.dropdown-menu .select {
+	background-color: #EBEBEB;
+}
+

@@ -1,0 +1,41 @@
+== User Setting Structure ==
+
+Format information can be found at privio.model.setting.js;
+
+''Example''
+{
+    "username": "liang",
+    "profile": {
+        "name": "Liang Zhang",
+        "img": "/liang/obj/img/IMG-UUID"
+    },
+    "friendship": {
+        "friends": {
+            "amislove": {
+                "ack": 0,
+                "rev": 0
+            },
+            "ian": {
+                "ack": 0,
+                "rev": 0
+            },
+            "liang2": {
+                "ack": 0,
+                "rev": 1
+            }
+        }
+    },
+    "secret": {
+        "storage_provider": "AmazonS3",
+        "access_key": "<Amazon S3 Access Key>",
+        "access_secret": "<Amazon S3 Access Secret>",
+        "safe_key": "password"
+    },
+    "safe": {
+        "friend_keys": {
+            "amislove": "password",
+            "ian": "password",
+            "liang2": "password"
+        }
+    }
+}

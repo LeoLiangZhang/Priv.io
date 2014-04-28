@@ -1,0 +1,1 @@
+cat glyphicons.css |grep -o -E '\.gly[^ ]* '|python -c "import sys; map(lambda s: sys.stdout.write('''<span><i class='{0}'></i>{0}</span><br>\n'''.format(s[1:-2])), sys.stdin.readlines())"
